@@ -11,7 +11,25 @@ SECRET_KEY = env(
     default="kZhTDZ4GJfwADFgPG00I6AzVm0iWSgjOUdLt8kHQNPYpAIEGNA5hr1fx00zqjY2o",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = env.list(
+        "CORS_ALLOWED_ORIGINS",
+        default=[
+            "http://localhost:4200",
+            "http://127.0.0.1:4200",
+            "http://localhost:3000",
+        ],
+    )
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
 
 # CACHES
 # ------------------------------------------------------------------------------
