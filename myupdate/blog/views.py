@@ -17,6 +17,13 @@ class PostViewSet(viewsets.ViewSet, generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        return self.queryset.filter(active=True).order_by('-created_at')
+
 
 class AuthInfor(APIView):
     def get(self, request):

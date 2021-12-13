@@ -45,7 +45,7 @@ class Post(BaseItem):
     summary = models.TextField(default="")
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     content = RichTextField()
-    author = models.OneToOneField('users.User', on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
     visit = models.IntegerField(default=0)
     tags = models.ManyToManyField(Tag, blank=True)
 
