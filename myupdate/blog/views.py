@@ -1,40 +1,40 @@
-from rest_framework.response import Response
-from rest_framework import viewsets, generics, permissions, status
-from rest_framework.views import APIView
-
-from .models import Post, Category
-from .serializers import CategorySerializer, PostSerializer
-
-from django.shortcuts import render
-
+from django.http import HttpResponse
+from .models import Post, Category, SubCategory
+from django.shortcuts import get_object_or_404
+from django.views import generic
+from django.views.generic.base import ContextMixin
+from django.views.generic import TemplateView
 # Create your views here.
 
 
-def index(request):
-    return render(request, 'pages/home.html')
+class NavView(ContextMixin):
+    def get_context_data(self, *args,**kwargs):
+            context = super().get_context_data(*args, **kwargs)
+            context["category"] = Category.objects.filter(active=True)
+            return context
 
 
-# Create your views here.
+class IndexView(NavView, TemplateView):
+    template_name = 'pages/home.html'
 
-class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-
-
-class PostViewSet(viewsets.ViewSet, generics.ListAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-
-    def get_queryset(self):
-        """
-        This view should return a list of all the purchases
-        for the currently authenticated user.
-        """
-        return self.queryset.filter(active=True).order_by('-created_at')
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["list"] = Post.objects.filter(active=True).order_by('-created_at')[0:5]
+        return context
 
 
-class AuthInfor(APIView):
-    def get(self, request):
-        return Response({
-            "x": 'oki'
-        }, status=status.HTTP_200_OK)
+class DetailView(generic.DetailView):
+    model = Post
+    template_name = 'pages/detail.html'
+
+
+def read_post(request):
+    id_post = request.POST['id']
+    if id_post:
+        p = get_object_or_404(Post, pk=id_post)
+        p.visit += 1
+        p.save()
+
+    return HttpResponse(status=201)
+
+

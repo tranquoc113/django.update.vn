@@ -2,7 +2,7 @@ from django.conf import settings
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from myupdate.blog.views import CategoryViewSet, AuthInfor, PostViewSet
+from myupdate.blog.api.post import CategoryViewSet, PostViewSet, AuthInfor
 
 if settings.DEBUG:
     router = DefaultRouter()
