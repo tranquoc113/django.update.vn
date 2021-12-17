@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mdb.min.css' %}">
+    <!-- Font Awesome -->
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+
+{% include "header.html" %}
+<!--Main layout-->
+<main class="mt-5">
+    <div class="container">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</main>
+
+
+<script type="text/javascript" src="{% static 'js/mdb.min.js'%}"></script>
+</body>
+</html>

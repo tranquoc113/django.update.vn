@@ -17,11 +17,28 @@ class BaseItem(models.Model):
 
 
 class Category(BaseItem):
-    name = models.CharField(max_length=255)
-    description = models.TextField(null=True, blank=True)
+    name = models.CharField(max_length=255, default='Tin tức')
+    description = models.TextField(null=True, blank=True, default='tin-tuc')
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
+class Course(BaseItem):
+    class Meta:
+        unique_together = ('name', 'category')
+        ordering = ['created_at']
+
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.subject
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -41,9 +58,12 @@ class Tag(models.Model):
 
 
 class Post(BaseItem):
+    class Meta:
+        ordering = ['created_at']
+
     title = models.CharField(max_length=512)
     summary = models.TextField(default="")
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True)
     content = RichTextField()
     author = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
     visit = models.IntegerField(default=0)

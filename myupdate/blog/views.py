@@ -5,6 +5,14 @@ from rest_framework.views import APIView
 from .models import Post, Category
 from .serializers import CategorySerializer, PostSerializer
 
+from django.shortcuts import render
+
+# Create your views here.
+
+
+def index(request):
+    return render(request, 'pages/home.html')
+
 
 # Create your views here.
 
