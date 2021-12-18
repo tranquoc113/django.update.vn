@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 class NavView(ContextMixin):
     def get_context_data(self, *args,**kwargs):
             context = super().get_context_data(*args, **kwargs)
-            context["category"] = Category.objects.filter(active=True)
+            context["category"] = Category.objects.filter(active__in=[True])
             return context
 
 
@@ -19,7 +19,7 @@ class IndexView(NavView, TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["list"] = Post.objects.filter(active=True).order_by('-created_at')[0:5]
+        context["list"] = Post.objects.filter(active__in=[True]).order_by('-created_at')[0:5]
         return context
 
 
