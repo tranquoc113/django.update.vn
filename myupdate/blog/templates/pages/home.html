@@ -15,7 +15,7 @@
                     <div class="d-flex">
                         <i class="fas fa-user-circle fa-2x"></i>
                         <div class="d-blox ms-2">
-                            <h5 class="card-title"><a href="{% url 'post:detail' p.slug %}">{{p.title}}</a></h5>
+                            <h5 class="card-title"><a href="{{p.get_absolute_url}}">{{p.title}}</a></h5>
                             <h6 class="card-subtitle mb-2 text-muted" style="font-size: 0.7rem !important">
                                 {{p.created_at|date:'d-m-Y H:m'}}</h6>
                         </div>
@@ -78,6 +78,11 @@
         }
 
 
+
+if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight)
+{
+
+}
 </script>
 {% endblock %}
 

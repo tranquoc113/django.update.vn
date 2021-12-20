@@ -30,12 +30,14 @@ schema_view = get_schema_view(
 urlpatterns = [
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
     # path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-    path("", include("myupdate.blog.urls", namespace='post')),
+    path('admin/', admin.site.urls),
+    path("", include("myupdate.blog.urls", namespace="blog")),
     # path(
     #     "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     # ),
     # Django Admin, use {% url 'admin:index' %}
-    path(settings.ADMIN_URL, admin.site.urls),
+    # path(settings.ADMIN_URL, admin.site.urls),
+
     # User management
     # path("users/", include("myupdate.users.urls", namespace="users")),
     # path("accounts/", include("allauth.urls")),

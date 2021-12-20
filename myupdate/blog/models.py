@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from django.urls import reverse
 
 
 # Create your models here.
@@ -13,7 +14,7 @@ class BaseItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     icon = models.ImageField(upload_to='static/image/%Y/%m/%d', null=True, blank=True)
     active = models.BooleanField(default=True)
-    slug = models.SlugField(unique=True, blank=True, max_length=200)
+    slug = models.SlugField(unique=True, null=False, max_length=200)
 
 
 class Category(BaseItem):
@@ -28,6 +29,9 @@ class Category(BaseItem):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('post:category', kwargs={'slug': self.slug})
+
 
 class SubCategory(models.Model):
     name = models.CharField(max_length=150)
@@ -38,6 +42,9 @@ class SubCategory(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_absolute_url_sub(self):
+        return reverse('post:category', kwargs={'slug': self.slug})
 
 
 class Course(BaseItem):
@@ -86,6 +93,9 @@ class Post(BaseItem):
 
     def __str__(self):
         return f"{self.category} - {self.title}"
+
+    def get_absolute_url(self):
+        return reverse('post:detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title + str(self.created_at) + str(self.id))

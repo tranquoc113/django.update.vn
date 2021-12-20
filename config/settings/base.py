@@ -40,15 +40,15 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
-# DATABASES = {"default": env.db("DATABASE_URL")}
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-            'NAME': 'update',
-            'HOST': '127.0.0.1',
-            'PORT': 27017,
-    }
-}
+DATABASES = {"default": env.db("DATABASE_URL")}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#             'NAME': 'update',
+#             'HOST': '127.0.0.1',
+#             'PORT': 27017,
+#     }
+# }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 # https://docs.djangoproject.com/en/stable/ref/settings/#std:setting-DEFAULT_AUTO_FIELD
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -205,6 +205,10 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
+
+                #custome
+                'myupdate.context_processors.global_context'
+
             ],
         },
     }
