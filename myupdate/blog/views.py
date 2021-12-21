@@ -1,9 +1,8 @@
 from django.http import HttpResponse
-from .models import Post, Category, SubCategory
+from .models import Post, Menu, SubMenu
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
-from django.views.generic.base import ContextMixin
-from django.views.generic import TemplateView
+from django.db.models import Q
 # Create your views here.
 
 
@@ -15,15 +14,16 @@ class IndexView(generic.ListView):
         return Post.objects.filter(active__in=[True]).order_by('-created_at')[0:5]
 
 
-class DetailView(generic.DetailView):
-    model = Post
-    template_name = 'pages/detail.html'
+def detail_post(request, slug):
+    p = Post.objects.filter(slug=slug).first()
+    p.visit += 1
+    p.save()
+    return render(request, 'pages/detail.html', {'post': p})
 
 
-def CategorylView(request):
-    return render(request, 'pages/category.html')
-
-
+def post_category(request, slug):
+    p = Post.objects.filter(Q(category__slug=slug)|Q(sub_category__slug=slug))
+    return render(request, 'pages/category.html', {'post': p})
 
 
 def read_post(request):

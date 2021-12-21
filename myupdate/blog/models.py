@@ -14,13 +14,11 @@ class BaseItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     icon = models.ImageField(upload_to='static/image/%Y/%m/%d', null=True, blank=True)
     active = models.BooleanField(default=True)
-    slug = models.SlugField(unique=True, null=False, max_length=200)
 
 
-class Category(BaseItem):
-    name = models.CharField(max_length=150, default='Tin tức')
-    description = models.TextField(null=True, blank=True, default='tin-tuc')
-    sub = models.BooleanField(default=False)
+class Menu(models.Model):
+    name = models.CharField(max_length=150)
+    slug = models.SlugField(null=True, blank=True, max_length=200)
 
     def __str__(self):
         return self.name
@@ -29,22 +27,16 @@ class Category(BaseItem):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
-    def get_absolute_url(self):
-        return reverse('post:category', kwargs={'slug': self.slug})
 
-
-class SubCategory(models.Model):
+class SubMenu(models.Model):
     name = models.CharField(max_length=150)
     slug = models.SlugField(unique=True, blank=True, max_length=100)
     category = models.ForeignKey(
-        Category, on_delete=models.SET_NULL, null=True, blank=True)
+        Menu, on_delete=models.SET_NULL, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
-    def get_absolute_url_sub(self):
-        return reverse('post:category', kwargs={'slug': self.slug})
 
 
 class Course(BaseItem):
@@ -54,8 +46,8 @@ class Course(BaseItem):
 
     name = models.CharField(max_length=255)
     description = models.TextField(null=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    sub_category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(Menu, on_delete=models.SET_NULL, null=True, blank=True)
+    sub_category = models.ForeignKey(SubMenu, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -84,8 +76,8 @@ class Post(BaseItem):
     title = models.CharField(max_length=512)
     summary = models.TextField(default="")
     course = models.ForeignKey(Course, on_delete=models.SET_NULL, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
-    sub_category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(Menu, on_delete=models.SET_NULL, null=True, blank=True)
+    sub_category = models.ForeignKey(SubMenu, on_delete=models.SET_NULL, null=True, blank=True)
     content = RichTextField()
     author = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
     visit = models.IntegerField(default=0)

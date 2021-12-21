@@ -1,12 +1,12 @@
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
-from .models import Post, Category, Tag
+from .models import Post, Menu, Tag
 from ..users.models import User
 
 
 class CategorySerializer(ModelSerializer):
     class Meta:
-        model = Category
+        model = Menu
         fields = "__all__"
 
 

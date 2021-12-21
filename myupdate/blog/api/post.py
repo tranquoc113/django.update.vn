@@ -2,12 +2,12 @@ from rest_framework.response import Response
 from rest_framework import viewsets, generics, permissions, status
 from rest_framework.views import APIView
 
-from myupdate.blog.models import Category, Post
+from myupdate.blog.models import Post, Menu
 from myupdate.blog.serializers import CategorySerializer, PostSerializer
 
 
 class CategoryViewSet(viewsets.ViewSet, generics.ListAPIView):
-    queryset = Category.objects.all()
+    queryset = Menu.objects.all()
     serializer_class = CategorySerializer
 
 

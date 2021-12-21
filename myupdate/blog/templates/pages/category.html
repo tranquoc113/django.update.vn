@@ -3,6 +3,75 @@
 
 {% block content %}
 
-<h1>Categort</h1>
+<section class="mb-5">
+    <div class="row">
+        <div class="mb-4">
+            {% for p in post %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <i class="fas fa-user-circle fa-2x"></i>
+                        <div class="d-blox ms-2">
+                            <h5 class="card-title"><a href="{% url 'post:detail' p.slug %}">{{p.title}}</a></h5>
+                            <h6 class="card-subtitle mb-2 text-muted" style="font-size: 0.7rem !important">
+                                {{p.created_at|date:settings.DATETIME_FORMAT}}</h6>
+                        </div>
+                    </div>
 
+
+                </div>
+                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                    <img
+                            src="/media/{{p.icon}}"
+                            class="img-fluid"
+                            style="height: 250px;width:100%"
+                    />
+
+                </div>
+                <div class="card-body">
+                    <p class="card-text mt-3">
+                        {{p.summary}}
+                    </p>
+
+                    <div class="d-flex justify-content-between">
+                        <div></div>
+                        <button type="button" class="btn btn-light btn-floating"
+                                data-mdb-toggle="collapse"
+                                data-mdb-target="#collapseExample{{p.id}}"
+                                aria-expanded="false"
+                                aria-controls="collapseExample{{p.id}}"
+                                onclick="read_post({{p.id}});"
+                                id="list-post-{{p.id}}"
+                        >
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    <div class="collapse mt-3" id="collapseExample{{p.id}}">
+                        {{p.content|safe|escape}}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
+<script>
+        function read_post(id){
+        var expand = document.getElementById('list-post-'+id).getAttribute('aria-expanded');
+        if(expand=='true'){
+             $.ajax({
+                type: "POST",
+                url: '{{ '/read-post/' }}',
+                data: { csrfmiddlewaretoken: '{{ csrf_token }}', id: id },
+                success: function callback(response){
+<!--                          success-->
+                        }
+            });
+        }
+
+        }
+
+
+</script>
 {% endblock %}
