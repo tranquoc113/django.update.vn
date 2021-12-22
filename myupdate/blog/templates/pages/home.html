@@ -10,7 +10,7 @@
         <div class="mb-4">
             <div></div>
             {% for p in list %}
-            <div class="card">
+            <div class="card mb-5">
                 <div class="card-body">
                     <div class="d-flex">
                         <i class="fas fa-user-circle fa-2x"></i>
@@ -55,7 +55,23 @@
                 </div>
             </div>
             {% endfor %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if list.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ list.previous_page_number }}">previous</a>
+                    {% endif %}
 
+                    <span class="current">
+                        Page {{ list.number }} of {{ list.paginator.num_pages }}.
+                    </span>
+
+                    {% if list.has_next %}
+                        <a href="?page={{ list.next_page_number }}">next</a>
+                        <a href="?page={{ list.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
         </div>
     </div>
 </section>
@@ -71,9 +87,7 @@
                 data: { csrfmiddlewaretoken: '{{ csrf_token }}', id: id },
                 success: function callback(response){
                 document.getElementById("read-post-"+id).className = "fas fa-chevron-up";
-
-<!--                          success-->
-                        }
+                 }
             });
         }else{
         document.getElementById("read-post-"+id).className = "fas fa-chevron-down";
@@ -85,7 +99,8 @@
 window.addEventListener('scroll',()=>{
     if(window.scrollY + window.innerHeight >=
     document.documentElement.scrollHeight){
-console.log('gooo')
+
+        console.log('gooo')
     }
 })
 

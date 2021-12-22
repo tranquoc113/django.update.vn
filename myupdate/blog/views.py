@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import HttpResponse
 from .models import Post, Menu, SubMenu
 from django.shortcuts import get_object_or_404, render
@@ -14,10 +15,20 @@ class IndexView(generic.ListView):
         return Post.objects.filter(active__in=[True]).order_by('-created_at')[0:5]
 
 
+def list_post(request):
+    list = Post.objects.filter(active__in=[True]).order_by('-created_at')
+    paginator = Paginator(list, 1)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    # print('page', page_obj.values())
+    return render(request, 'pages/home.html', {'list': page_obj})
+
+
 def detail_post(request, slug):
     p = Post.objects.filter(slug=slug).first()
-    p.visit += 1
-    p.save()
+    if p:
+        p.visit += 1
+        p.save()
     return render(request, 'pages/detail.html', {'post': p})
 
 
@@ -34,5 +45,6 @@ def read_post(request):
         p.save()
 
     return HttpResponse(status=201)
+
 
 
