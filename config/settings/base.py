@@ -44,7 +44,7 @@ DATABASES = {"default": env.db("DATABASE_URL")}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'djongo',
-#             'NAME': 'update',
+#             'NAME': 'updatedb',
 #             'HOST': '127.0.0.1',
 #             'PORT': 27017,
 #     }

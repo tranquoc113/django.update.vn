@@ -14,7 +14,7 @@ class BaseItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     icon = models.ImageField(upload_to='static/image/%Y/%m/%d')
     active = models.BooleanField(default=True)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=512)
 
 
 class Menu(models.Model):
